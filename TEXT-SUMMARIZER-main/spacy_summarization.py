@@ -1,10 +1,7 @@
-# NLP Pkgs
 import spacy 
-nlp = spacy.load('en')
-# Pkgs for Normalizing Text
+nlp = spacy.load("en_core_web_sm")
 from spacy.lang.en.stop_words import STOP_WORDS
 from string import punctuation
-# Import Heapq for Finding the Top N Sentences
 from heapq import nlargest
 
 
@@ -13,7 +10,6 @@ def text_summarizer(raw_docx):
     raw_text = raw_docx
     docx = nlp(raw_text)
     stopwords = list(STOP_WORDS)
-    # Build Word Frequency # word.text is tokenization in spacy
     word_frequencies = {}  
     for word in docx:  
         if word.text not in stopwords:
@@ -27,10 +23,8 @@ def text_summarizer(raw_docx):
 
     for word in word_frequencies.keys():  
         word_frequencies[word] = (word_frequencies[word]/maximum_frequncy)
-    # Sentence Tokens
     sentence_list = [ sentence for sentence in docx.sents ]
 
-    # Sentence Scores
     sentence_scores = {}  
     for sent in sentence_list:  
         for word in sent:
@@ -45,10 +39,5 @@ def text_summarizer(raw_docx):
     summarized_sentences = nlargest(7, sentence_scores, key=sentence_scores.get)
     final_sentences = [ w.text for w in summarized_sentences ]
     summary = ' '.join(final_sentences)
-    print("Original Document\n")
-    print(raw_docx)
-    print("Total Length:",len(raw_docx))
-    print('\n\nSummarized Document\n')
-    print(summary)
-    print("Total Length:",len(summary))
+    return summary
     

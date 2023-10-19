@@ -10,12 +10,10 @@ nlp = spacy.load("en_core_web_sm")
 app = Flask(__name__)
 
 
-# Sumy Pkg
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
 
-# Sumy 
 def sumy_summary(docx):
 	parser = PlaintextParser.from_string(docx,Tokenizer("english"))
 	lex_summarizer = LexRankSummarizer()
@@ -25,7 +23,6 @@ def sumy_summary(docx):
 	return result
 
 
-# Reading Time
 def readingTime(mytext):
 	total_words = len([ token.text for token in nlp(mytext)])
 	estimatedTime = total_words/200.0
@@ -48,11 +45,6 @@ def analyze():
 		final_time = end-start
 	return render_template('index.html',ctext=rawtext,final_summary=final_summary,final_time=final_time,final_reading_time=final_reading_time,summary_reading_time=summary_reading_time)
 
-
-
-@app.route('/about')
-def about():
-	return render_template('index.html')
 
 if __name__ == '__main__':
 	app.run(debug=True)
